@@ -24,3 +24,5 @@ fleet_plan:
     number: 3
     fleet:
       - {callsign: alpha1,  type: uav, location: [-27.4705, 153.0260]}
+      - {callsign: bravo1,  type: tank, location: [-27.4705, 153.0260]}
+

@@ -103,10 +103,18 @@ class BattleManager(MDApp):
 				# place UAV onto map
 				# TODO: check if valid  lat and long first
 				if self.mission.darkmode:
-					marker = MapMarker(lat = vehicle["location"][0], lon = vehicle["location"][1], source = "images/uav_dark.png")
+					if vehicle["type"] == "uav":
+						_source = "images/uav_dark.png"
+					if vehicle["type"] == "tank":
+						_source = "images/tank_dark.png" 
+					marker = MapMarker(lat = vehicle["location"][0], lon = vehicle["location"][1], source = _source)
 					self.__markers.append(marker)
 				else:
-					marker = MapMarker(lat = vehicle["location"][0], lon = vehicle["location"][1], source = "images/uav_light.png")
+					if vehicle["type"] == "uav":
+						_source = "images/uav_light.png"
+					if vehicle["type"] == "tank":
+						_source = "images/tank_light.png" 		
+					marker = MapMarker(lat = vehicle["location"][0], lon = vehicle["location"][1], source = _source)
 					self.__markers.append(marker)
 				self.root.screens[windows.mainWindow.value].ids.map.add_marker(marker)
 
@@ -165,15 +173,23 @@ class BattleManager(MDApp):
 		self.__markers = []
 
 		# load fleet
-		for vehicle in range(self.mission.fleetNunber):
-			# place vehicle onto map TODO: currently only supports UAVs
+		for vehicle in self.mission.fleet:
 			if self.mission.darkmode:
-				marker = MapMarker(lat = self.mission.lat, lon = self.mission.lon, source = "images/uav_dark.png")
+				if vehicle["type"] == "uav":
+					_source = "images/uav_dark.png"
+				if vehicle["type"] == "tank":
+					_source = "images/tank_dark.png" 
+				marker = MapMarker(lat = self.mission.lat, lon = self.mission.lon, source = _source)
 				self.__markers.append(marker)
 			else:
-				marker = MapMarker(lat = self.mission.lat, lon = self.mission.lon, source = "images/uav_light.png")
+				if vehicle["type"] == "uav":
+					_source = "images/uav_light.png"
+				if vehicle["type"] == "tank":
+					_source = "images/tank_light.png" 		
+				marker = MapMarker(lat = self.mission.lat, lon = self.mission.lon, source = _source)
 				self.__markers.append(marker)
 			self.root.screens[windows.mainWindow.value].ids.map.add_marker(marker)
+
 
 			# TODO: load callsign information onto screen
 
