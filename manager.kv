@@ -1,0 +1,125 @@
+#:import MapView kivy.garden.mapview.MapView
+
+WindowManager:
+	LoginWindow:
+	MainWindow: 
+
+
+<LoginWindow>:
+	name: "Login"
+
+	MDTextField:
+		
+		id: missionTxt
+
+		hint_text: "mission"
+
+		size_hint_x: None
+		size_hint_y: None
+
+		height: 30
+		width: 200
+		pos_hint: {"center_x": .5, "center_y": .55}
+
+		on_text_validate: app.mission_validate(missionTxt.text)
+
+
+	MDSpinner:
+
+		id: spinner
+
+        size_hint: None, None
+        size: dp(20), dp(20)
+
+        pos_hint: {'center_x': .5, 'center_y': .45}
+        
+        active: False
+
+    MDLabel:
+
+    	id: timeLbl
+
+    	text: ""
+		theme_text_color: "Hint"
+
+		pos_hint: {'center_x': 0.52, 'center_y': 0.97}
+
+
+    MDLabel:
+
+    	id: versionLbl
+
+    	text: "0.1"
+		theme_text_color: "Hint"
+
+		pos_hint: {'center_x': 0.52, 'center_y': 0.05}
+
+
+<MainWindow>
+
+	name: "Main"
+
+	MapView:
+
+		id: map
+		
+		zoom: 15
+		lat: -27.48037
+		lon: 153.04645
+
+		size_hint: 1, 1
+		pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+    MDLabel:
+
+    	id: timeLbl
+
+    	text: ""
+		theme_text_color: "Hint"
+
+		pos_hint: {'center_x': 0.52, 'center_y': 0.97}
+
+	MDLabel:
+
+    	id: missionNameLbl
+
+    	text: "Mission: "
+		theme_text_color: "Hint"
+
+		pos_hint: {'center_x': 0.52, 'center_y': 0.23}
+
+	MDLabel:
+
+    	id: missionStart
+
+    	text: "Start: "
+		theme_text_color: "Hint"
+
+		pos_hint: {'center_x': 0.52, 'center_y': 0.19}
+
+	MDLabel:
+
+    	id: missionLocation
+
+    	text: "Start Location: "
+		theme_text_color: "Hint"
+
+		pos_hint: {'center_x': 0.52, 'center_y': 0.15}
+
+	MDLabel:
+
+    	id: missionDuration
+
+    	text: "Duration: "
+		theme_text_color: "Hint"
+
+		pos_hint: {'center_x': 0.52, 'center_y': 0.11}
+
+	MDLabel:
+
+    	id: missionOperation
+
+    	text: "Operational Distance: "
+		theme_text_color: "Hint"
+
+		pos_hint: {'center_x': 0.52, 'center_y': 0.07}	

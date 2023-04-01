@@ -1,0 +1,26 @@
+### This is an example mission file to help inform your own applications ###
+
+# mission data
+mission: example                                 # mission name
+mission_start: 0800                              # start time
+mission_date: 01/01/2000                         # start date
+mission_duration: 120                            # mission duration in mins
+mission_start_lat: -27.4705                      # mission start location lat
+mission_start_long: 153.0260                     # mission start location long
+operational_distance: 80                         # operational distance radius in km 
+
+# manager config
+preload_map: True                                # option to preload maps
+darkmode: True                                   # presents dark mode OSM data
+
+# server data - the server manager is started on this address
+ip_address: 127.0.0.1
+port: 8050
+
+# fleet plan data
+fleet_plan:
+  -
+    fleet_name: example fleet 
+    number: 3
+    fleet:
+      - {callsign: alpha1,  type: uav, location: [-27.4705, 153.0260]}
