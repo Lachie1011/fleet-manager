@@ -21,8 +21,8 @@ port: 8050
 fleet_plan:
   -
     fleet_name: example fleet 
-    number: 3
+    number: 2
     fleet:
       - {callsign: alpha1,  type: uav, location: [-27.4705, 153.0260]}
-      - {callsign: bravo1,  type: tank, location: [-27.4705, 153.0260]}
+      - {callsign: bravo1,  type: uav, location: [-27.4705, 153.0260]}
 

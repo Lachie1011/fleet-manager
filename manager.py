@@ -5,6 +5,8 @@
     Is the main entry point for battle space manager and sets up the app
 """
 
+import os 
+import signal
 import threading
 from enum import Enum
 from datetime import datetime
@@ -66,6 +68,9 @@ class BattleManager(MDApp):
 
 		# scheduling marker update
 		Clock.schedule_interval(self.marker_update, 1)
+
+		# member variables
+		self.serverStatus = False
 
 		return Builder.load_file('manager.kv') 
 
@@ -139,6 +144,7 @@ class BattleManager(MDApp):
 			self.__server = Server(self.mission)
 			self.__server_thread = threading.Thread(target=self.thread_function)
 			self.__server_thread.start()  # TODO: figure out nice way to end server when app is closed, probs just a stop call to server on end func
+			self.serverStatus = True  # server is now active
 
 			self.root.current = "Main"
 			self.currentFrame = windows.mainWindow.name
@@ -198,6 +204,12 @@ class BattleManager(MDApp):
 	def thread_function(self):
 		""" thread function for server"""
 		self.__server.run()
+
+	def on_stop(self):
+		""" Clean up on application close """
+		if self.serverStatus:
+			os.kill(self.__server_thread.native_id, signal.SIGKILL)
+		return True
 
 
 # entry point 

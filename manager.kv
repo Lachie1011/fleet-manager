@@ -122,4 +122,19 @@ WindowManager:
     	text: "Operational Distance: "
 		theme_text_color: "Hint"
 
-		pos_hint: {'center_x': 0.52, 'center_y': 0.07}	
+		pos_hint: {'center_x': 0.52, 'center_y': 0.07}
+
+	
+	MDList:
+
+		id: fleetList
+		size_hint: 0.4, 0.4
+		pos_hint: {'center_x': 1, 'center_y': 0.07}
+
+		TwoLineRightIconListItem:
+
+			text: "Vehicle: "
+			secondary_text: "Status: Online"
+
+			IconRightWidget:
+				icon: "alert"

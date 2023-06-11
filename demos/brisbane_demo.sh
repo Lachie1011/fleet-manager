@@ -1,9 +1,8 @@
 #!/bin/bash
 
-## This is a scipt to demo the UAV App over brisbane
-## To be run with a running UAVApp
-## It only publishes locations to one UAV with callsign: alpha1 
-## It curls POST requests over a block in brisbane indefinetly or until ctrl-c is pressed
+## This is a scipt to demo fleet manager over brisbane
+## Publishes locations to one UAV with callsign: alpha1 
+## Curls POST requests over a block in brisbane indefinetly or until ctrl-c is pressed
 
 ## Data grabbed from www.geoplanner.com
 
