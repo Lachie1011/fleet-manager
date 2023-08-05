@@ -28,7 +28,7 @@ class Server:
 
     @app.route('/update/location', methods=['POST'])
     def update_location() -> Response: 
-        """ endpoint to update the location of a UAV """
+        """ endpoint to update the location of a vehicle """
         data = {'data': ''}
 
         # getting args from url

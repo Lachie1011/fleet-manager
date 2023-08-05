@@ -121,14 +121,20 @@ class FleetManager(MDApp):
 					marker = MapMarker(lat = vehicle["location"][0], lon = vehicle["location"][1], source = _source)
 					self.__markers.append(marker)
 				self.root.screens[windows.mainWindow.value].ids.map.add_marker(marker)
-		
+
+			# checking last update time and updating activity statuses
+			currentTime = datetime.now()
+			for i in range(len(self.mission.vehicleStatus)):
+				delta = (currentTime - self.mission.vehicleStatus[i][2])
+				if delta.total_seconds() >  10:  # TODO update this to be a set variable from yaml
+					self.mission.vehicleStatus[i][1] = "offline"
+
 			# updating fleet status information
 			for i in range(len(self.mission.vehicleStatus)):
 				# updating text
 				self.__statusList[i].secondary_text = self.mission.vehicleStatus[i][1]
-				
 				# updating icon
-				if(self.mission.vehicleStatus[i][1] == "active"):
+				if(self.mission.vehicleStatus[i][1] == "online"):
 					self.__statusList[i].source = "images/active.png"
 				else:
 					self.__statusList[i].source = "images/inactive.png"
@@ -210,7 +216,7 @@ class FleetManager(MDApp):
 			
 			# updating vehicle list - inactive initially
 			rightIcon = ImageLeftWidget(source="images/inactive.png")
-			vehicleItem = TwoLineAvatarListItem(text=vehicle["callsign"], secondary_text= "inactive")
+			vehicleItem = TwoLineAvatarListItem(text=vehicle["callsign"], secondary_text= "offline")
 
 			vehicleItem.add_widget(rightIcon)
 			self.root.screens[windows.mainWindow.value].ids.fleetList.add_widget(vehicleItem)

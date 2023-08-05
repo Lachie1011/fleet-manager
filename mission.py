@@ -4,6 +4,7 @@
 """
 
 import yaml 
+import datetime
 
 class Mission():
     """
@@ -37,15 +38,16 @@ class Mission():
         self.darkmode = mission_file["darkmode"]
         self.preloadMap = mission_file["preload_map"]
 
-        # reading in UAV information
+        # reading in fleet information
         self.fleetName = mission_file["fleet_plan"][0]["fleet_name"]
         self.fleetNunber = mission_file["fleet_plan"][0]["number"]
         self.fleet = mission_file["fleet_plan"][0]["fleet"]
 
         # dictionary to hold vehicles activity status
+        startDateTime = datetime.datetime.now()
         self.vehicleStatus = []
         for vehicle in self.fleet:
-            self.vehicleStatus.append([vehicle["callsign"], "inactive"])  # TODO: make this an enum and update list -> dict
+            self.vehicleStatus.append([vehicle["callsign"], "offline", startDateTime])  # TODO: make this an enum and update list -> dict
 
     def update_location(self, callsign, lat, long) -> bool:
         """ updates the current location of a vehicle """
@@ -68,6 +70,7 @@ class Mission():
         """ updates the activity status of a vehicle """
         for i in range(len(self.vehicleStatus)):
             if self.vehicleStatus[i][0] == callsign:
-                self.vehicleStatus[i][1] = "active"
+                self.vehicleStatus[i][1] = "online"
+                self.vehicleStatus[i][2] = datetime.datetime.now()
 
         
