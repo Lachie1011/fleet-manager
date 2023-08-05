@@ -16,6 +16,7 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.config import Config
 from kivy.uix.image import Image
+from kivymd.uix.label import MDLabel
 from kivy.core.window import Window
 from kivy.graphics.texture import Texture
 from kivy.garden.mapview import MapSource, MapMarker
@@ -120,6 +121,10 @@ class FleetManager(MDApp):
 						_source = "images/tank_light.png" 		
 					marker = MapMarker(lat = vehicle["location"][0], lon = vehicle["location"][1], source = _source)
 					self.__markers.append(marker)
+
+				# lbl = MDLabel(text=vehicle["callsign"], halign="center")
+				# lbl.pos = marker.pos
+				# marker.add_widget(lbl)
 				self.root.screens[windows.mainWindow.value].ids.map.add_marker(marker)
 
 			# checking last update time and updating activity statuses
@@ -133,11 +138,12 @@ class FleetManager(MDApp):
 			for i in range(len(self.mission.vehicleStatus)):
 				# updating text
 				self.__statusList[i].secondary_text = self.mission.vehicleStatus[i][1]
+
 				# updating icon
 				if(self.mission.vehicleStatus[i][1] == "online"):
-					self.__statusList[i].source = "images/active.png"
+					self.__statusListImage[i].source = "images/active.png"
 				else:
-					self.__statusList[i].source = "images/inactive.png"
+					self.__statusListImage[i].source = "images/inactive.png"
 
 	def	mission_validate(self, text) -> None:
 		""" validates the mission file """
@@ -194,6 +200,7 @@ class FleetManager(MDApp):
 		
 		self.__markers = []
 		self.__statusList = []
+		self.__statusListImage = []
 
 		# load fleet
 		for vehicle in self.mission.fleet:
@@ -212,6 +219,11 @@ class FleetManager(MDApp):
 					_source = "images/tank_light.png" 		
 				marker = MapMarker(lat = self.mission.lat, lon = self.mission.lon, source = _source)
 				self.__markers.append(marker)
+
+			# creating a label for the marker TODO:toggle functionality for showing the labels 
+			# lbl = MDLabel(text=vehicle["callsign"], halign="center")
+			# marker.add_widget(lbl)
+
 			self.root.screens[windows.mainWindow.value].ids.map.add_marker(marker)
 			
 			# updating vehicle list - inactive initially
@@ -220,7 +232,9 @@ class FleetManager(MDApp):
 
 			vehicleItem.add_widget(rightIcon)
 			self.root.screens[windows.mainWindow.value].ids.fleetList.add_widget(vehicleItem)
-			self.__statusList.append(rightIcon)
+			self.__statusListImage.append(rightIcon)
+			self.__statusList.append(vehicleItem)
+
 
 		return True
 	
