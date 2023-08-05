@@ -41,7 +41,12 @@ class Mission():
         self.fleetName = mission_file["fleet_plan"][0]["fleet_name"]
         self.fleetNunber = mission_file["fleet_plan"][0]["number"]
         self.fleet = mission_file["fleet_plan"][0]["fleet"]
-    
+
+        # dictionary to hold vehicles activity status
+        self.vehicleStatus = []
+        for vehicle in self.fleet:
+            self.vehicleStatus.append([vehicle["callsign"], "inactive"])  # TODO: make this an enum and update list -> dict
+
     def update_location(self, callsign, lat, long) -> bool:
         """ updates the current location of a vehicle """
         try:
@@ -54,5 +59,15 @@ class Mission():
         for i in range(len(self.fleet)):
             if self.fleet[i]["callsign"] == callsign:
                 self.fleet[i]["location"] = [lat, long]
+                # update status
+                self.update_status(callsign)
                 return True        
         return False
+    
+    def update_status(self, callsign):
+        """ updates the activity status of a vehicle """
+        for i in range(len(self.vehicleStatus)):
+            if self.vehicleStatus[i][0] == callsign:
+                self.vehicleStatus[i][1] = "active"
+
+        

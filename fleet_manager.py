@@ -2,7 +2,7 @@
 
 """
     manager.py
-    Is the main entry point for battle space manager and sets up the app
+    Is the main entry point for fleetmanager and sets up the app
 """
 
 import os 
@@ -18,8 +18,9 @@ from kivy.config import Config
 from kivy.uix.image import Image
 from kivy.core.window import Window
 from kivy.graphics.texture import Texture
-from kivy.uix.screenmanager import ScreenManager, Screen 
 from kivy.garden.mapview import MapSource, MapMarker
+from kivy.uix.screenmanager import ScreenManager, Screen 
+from kivymd.uix.list import TwoLineAvatarListItem, ImageLeftWidget
 
 # adding app modules
 from server import Server
@@ -42,7 +43,7 @@ class WindowManager(ScreenManager):
 	""" window manager """
 	pass
 
-class BattleManager(MDApp):
+class FleetManager(MDApp):
 	"""
 		logic for the main application
 	"""
@@ -58,7 +59,7 @@ class BattleManager(MDApp):
 
 	def build(self) -> any:
 		""" build the application """
-		self.title = "battlespace manager"
+		self.title = "fleet manager"
 		# layout options
 		self.theme_cls.theme_style = "Dark"
 		self.theme_cls.primary_palette = "BlueGray"
@@ -67,12 +68,12 @@ class BattleManager(MDApp):
 		Clock.schedule_interval(self.timeFunction, 1)
 
 		# scheduling marker update
-		Clock.schedule_interval(self.marker_update, 1)
+		Clock.schedule_interval(self.fleet_update, 1)
 
 		# member variables
 		self.serverStatus = False
 
-		return Builder.load_file('manager.kv') 
+		return Builder.load_file('fleet_manager.kv') 
 
 	def timeFunction(self, dt) -> None:
 		""" function to updated the time label """
@@ -82,30 +83,28 @@ class BattleManager(MDApp):
 			current_time = now.strftime("%H:%M:%S")
 
 			#self.root.ids.timeLbl.text = current_time
-			self.root.screens[windows.loginWindow.value].ids.timeLbl.text = current_time # todo: make this an enum 
+			self.root.screens[windows.loginWindow.value].ids.timeLbl.text = current_time
 
 		if(self.currentFrame == windows.mainWindow.name):
 			now = datetime.now()
 
 			current_time = now.strftime("%H:%M:%S")
 
-			#self.root.ids.timeLbl.text = current_time
-			self.root.screens[windows.mainWindow.value].ids.timeLbl.text = current_time # todo: make this an enum 
+			self.root.screens[windows.mainWindow.value].ids.timeLbl.text = current_time 
 
-	def marker_update(self, dt) -> None:
-		""" function that runs every second and updates markers """
-		# TODO: there might be a nicer or smarter way to do this
+	def fleet_update(self, dt) -> None:
+		""" function that runs every second and updates fleet information """
 		if(self.currentFrame == windows.mainWindow.name):
-			# remove existing markers
+			# updates markers on screen
 			for marker in self.__markers:
-				# first remove existing markers
+				# removing existing markers
 				self.root.screens[windows.mainWindow.value].ids.map.remove_marker(marker)
 
 			self.__markers = []
 			
-			# update UAVs
+			# update markers
 			for vehicle in self.mission.fleet:
-				# place UAV onto map
+				# place marker onto map
 				# TODO: check if valid  lat and long first
 				if self.mission.darkmode:
 					if vehicle["type"] == "uav":
@@ -122,6 +121,17 @@ class BattleManager(MDApp):
 					marker = MapMarker(lat = vehicle["location"][0], lon = vehicle["location"][1], source = _source)
 					self.__markers.append(marker)
 				self.root.screens[windows.mainWindow.value].ids.map.add_marker(marker)
+		
+			# updating fleet status information
+			for i in range(len(self.mission.vehicleStatus)):
+				# updating text
+				self.__statusList[i].secondary_text = self.mission.vehicleStatus[i][1]
+				
+				# updating icon
+				if(self.mission.vehicleStatus[i][1] == "active"):
+					self.__statusList[i].source = "images/active.png"
+				else:
+					self.__statusList[i].source = "images/inactive.png"
 
 	def	mission_validate(self, text) -> None:
 		""" validates the mission file """
@@ -177,9 +187,11 @@ class BattleManager(MDApp):
 			pass
 		
 		self.__markers = []
+		self.__statusList = []
 
 		# load fleet
 		for vehicle in self.mission.fleet:
+			# adding markers to manager
 			if self.mission.darkmode:
 				if vehicle["type"] == "uav":
 					_source = "images/uav_dark.png"
@@ -195,9 +207,14 @@ class BattleManager(MDApp):
 				marker = MapMarker(lat = self.mission.lat, lon = self.mission.lon, source = _source)
 				self.__markers.append(marker)
 			self.root.screens[windows.mainWindow.value].ids.map.add_marker(marker)
+			
+			# updating vehicle list - inactive initially
+			rightIcon = ImageLeftWidget(source="images/inactive.png")
+			vehicleItem = TwoLineAvatarListItem(text=vehicle["callsign"], secondary_text= "inactive")
 
-
-			# TODO: load callsign information onto screen
+			vehicleItem.add_widget(rightIcon)
+			self.root.screens[windows.mainWindow.value].ids.fleetList.add_widget(vehicleItem)
+			self.__statusList.append(rightIcon)
 
 		return True
 	
@@ -214,4 +231,4 @@ class BattleManager(MDApp):
 
 # entry point 
 if __name__ == '__main__':
-    BattleManager().run()
+    FleetManager().run()
