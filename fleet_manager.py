@@ -48,7 +48,6 @@ class FleetManager(MDApp):
 	"""
 		logic for the main application
 	"""
-
 	# current frame
 	currentFrame = windows.loginWindow.name
 
@@ -60,10 +59,13 @@ class FleetManager(MDApp):
 
 	def build(self) -> any:
 		""" build the application """
+
+		self.icon = "images/app_icon.png"  #TODO: dont know why this isnt working 
 		self.title = "fleet manager"
+		
 		# layout options
 		self.theme_cls.theme_style = "Dark"
-		self.theme_cls.primary_palette = "BlueGray"
+		self.theme_cls.primary_palette = "Gray"
 
 		# scheduling time clock
 		Clock.schedule_interval(self.timeFunction, 1)
@@ -78,6 +80,8 @@ class FleetManager(MDApp):
 
 	def timeFunction(self, dt) -> None:
 		""" function to updated the time label """
+		self.icon = "images/app_icon.png"
+
 		if(self.currentFrame == windows.loginWindow.name):
 			now = datetime.now()
 
