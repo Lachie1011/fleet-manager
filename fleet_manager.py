@@ -69,7 +69,7 @@ class FleetManager(MDApp):
 		Clock.schedule_interval(self.timeFunction, 1)
 
 		# scheduling marker update
-		Clock.schedule_interval(self.fleet_update, 1)
+		Clock.schedule_interval(self.fleet_update, 0.01)
 
 		# member variables
 		self.serverStatus = False
@@ -122,10 +122,14 @@ class FleetManager(MDApp):
 					marker = MapMarker(lat = vehicle["location"][0], lon = vehicle["location"][1], source = _source)
 					self.__markers.append(marker)
 
-				# lbl = MDLabel(text=vehicle["callsign"], halign="center")
-				# lbl.pos = marker.pos
-				# marker.add_widget(lbl)
 				self.root.screens[windows.mainWindow.value].ids.map.add_marker(marker)
+
+				# updating label onto marker 
+				lbl = MDLabel(text=vehicle["callsign"], halign="center")
+				lbl.pos = marker.pos[:]
+				lbl.pos[0] = lbl.pos[0] - 25
+				lbl.pos[1] = lbl.pos[1] - 70
+				marker.add_widget(lbl)
 
 			# checking last update time and updating activity statuses
 			currentTime = datetime.now()
