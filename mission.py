@@ -3,13 +3,15 @@
     Used to load and manage configuration for a mission
 """
 
-import yaml 
+import yaml
 import datetime
+
 
 class Mission():
     """
         creates and holds information relevant to the mission
     """
+
     def __init__(self, path) -> None:
         # valid mission flag
         self.isValid = True
@@ -27,13 +29,14 @@ class Mission():
         """ constructs the mission from yaml file"""
         # reading in mission values
         self.name = mission_file["mission"]
-        self.start = mission_file["mission_date"] + " at " + str(mission_file["mission_start"])
+        self.start = mission_file["mission_date"] + \
+            " at " + str(mission_file["mission_start"])
         self.lat = mission_file["mission_start_lat"]
         self.lon = mission_file["mission_start_long"]
         self.location = str(self.lat) + " " + str(self.lon)
         self.duration = str(mission_file["mission_duration"]) + "mins"
         self.operation = str(mission_file["operational_distance"]) + "km"
-        
+
         # reading in manager preferences
         self.darkmode = mission_file["darkmode"]
         self.preloadMap = mission_file["preload_map"]
@@ -47,7 +50,9 @@ class Mission():
         startDateTime = datetime.datetime.now()
         self.vehicleStatus = []
         for vehicle in self.fleet:
-            self.vehicleStatus.append([vehicle["callsign"], "offline", startDateTime])  # TODO: make this an enum and update list -> dict
+            # TODO: make this an enum and update list -> dict
+            self.vehicleStatus.append(
+                [vehicle["callsign"], "offline", startDateTime])
 
     def update_location(self, callsign, lat, long) -> bool:
         """ updates the current location of a vehicle """
@@ -57,20 +62,18 @@ class Mission():
             long = float(long)
         except Exception as e:
             return False
-        
+
         for i in range(len(self.fleet)):
             if self.fleet[i]["callsign"] == callsign:
                 self.fleet[i]["location"] = [lat, long]
                 # update status
                 self.update_status(callsign)
-                return True        
+                return True
         return False
-    
+
     def update_status(self, callsign):
         """ updates the activity status of a vehicle """
         for i in range(len(self.vehicleStatus)):
             if self.vehicleStatus[i][0] == callsign:
                 self.vehicleStatus[i][1] = "online"
                 self.vehicleStatus[i][2] = datetime.datetime.now()
-
-        

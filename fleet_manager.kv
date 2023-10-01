@@ -83,48 +83,92 @@ WindowManager:
 
     	id: missionNameLbl
 
-    	text: "Mission: "
+    	text: "Mission:"
 		theme_text_color: "Hint"
 
 		pos_hint: {'center_x': 0.52, 'center_y': 0.23}
 
 	MDLabel:
 
-    	id: missionStart
+    	id: missionName
 
-    	text: "Start: "
+    	text: ""
+		colour: 255,255,255,1
+
+		pos_hint: {'center_x': 0.555, 'center_y': 0.23}
+
+	MDLabel:
+
+    	id: missionStartLbl
+
+    	text: "Start:"
 		theme_text_color: "Hint"
 
 		pos_hint: {'center_x': 0.52, 'center_y': 0.19}
 
 	MDLabel:
 
-    	id: missionLocation
+    	id: missionStart
 
-    	text: "Start Location: "
+    	text: ""
+		colour: 255,255,255,1
+
+		pos_hint: {'center_x': 0.543, 'center_y': 0.19}
+
+	MDLabel:
+
+    	id: missionLocationLbl
+
+    	text: "Start Location:"
 		theme_text_color: "Hint"
 
 		pos_hint: {'center_x': 0.52, 'center_y': 0.15}
 
 	MDLabel:
 
-    	id: missionDuration
+    	id: missionLocation
 
-    	text: "Duration: "
+    	text: ""
+		colour: 255,255,255,1
+
+		pos_hint: {'center_x': 0.58, 'center_y': 0.15}
+
+	MDLabel:
+
+    	id: missionDurationLbl
+
+    	text: "Duration:"
 		theme_text_color: "Hint"
 
 		pos_hint: {'center_x': 0.52, 'center_y': 0.11}
 
 	MDLabel:
 
-    	id: missionOperation
+    	id: missionDuration
 
-    	text: "Operational Distance: "
+    	text: ""
+		colour: 255,255,255,1
+
+		pos_hint: {'center_x': 0.555, 'center_y': 0.11}
+
+	MDLabel:
+
+    	id: missionOperationLbl
+
+    	text: "Operational Distance:"
 		theme_text_color: "Hint"
 
 		pos_hint: {'center_x': 0.52, 'center_y': 0.07}
 
-	
+	MDLabel:
+
+    	id: missionOperation
+
+    	text: ""
+		colour: 255,255,255,1
+
+		pos_hint: {'center_x': 0.603, 'center_y': 0.07}
+
 	MDList:
 
 		id: fleetList
@@ -133,7 +177,7 @@ WindowManager:
 
 		TwoLineRightIconListItem:
 
-			text: "Vehicles"
+			text: "Callsigns"
 			secondary_text: ""
 
 			IconRightWidget:
