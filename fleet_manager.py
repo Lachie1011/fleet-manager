@@ -16,7 +16,7 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivymd.uix.label import MDLabel
 from kivy.core.window import Window
-from kivy.garden.mapview import MapSource, MapMarker
+from kivy.garden.mapview import MapSource, MapMarker  # pylint: disable=E0611, E0401
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivymd.uix.list import TwoLineAvatarListItem, ImageLeftWidget
 
@@ -43,18 +43,18 @@ class WindowManager(ScreenManager):
     """ window manager """
 
 
-class FleetManager(MDApp):
+class FleetManager(MDApp):  # pylint: disable=R0902
     """
-            logic for the main application
+        main application
     """
-    # current frame
-    current_frame = Windows.loginWindow.name
+    __current_frame = Windows.loginWindow.name
+    __server_status = False
+    __markers = []
+    __status_list = []
+    __status_list_image = []
 
     # window configuration
     Window.maximize()
-
-    def __init__(self) -> None:
-        super().__init__()
 
     def build(self) -> any:
         """ build the application """
@@ -73,16 +73,13 @@ class FleetManager(MDApp):
         # scheduling marker update
         Clock.schedule_interval(self.fleet_update, 0.01)
 
-        # member variables
-        self.server_status = False
-
         return Builder.load_file('fleet_manager.kv')
 
     def time_function(self, dt) -> None:
         """ function to updated the time label """
         self.icon = "images/app_icon.png"
 
-        if self.current_frame == Windows.loginWindow.name:
+        if self.__current_frame == Windows.loginWindow.name:
             now = datetime.now()
 
             current_time = now.strftime("%H:%M:%S")
@@ -90,7 +87,7 @@ class FleetManager(MDApp):
             # self.root.ids.timeLbl.text = current_time
             self.root.screens[Windows.loginWindow.value].ids.timeLbl.text = current_time
 
-        if self.current_frame == Windows.mainWindow.name:
+        if self.__current_frame == Windows.mainWindow.name:
             now = datetime.now()
 
             current_time = now.strftime("%H:%M:%S")
@@ -99,7 +96,7 @@ class FleetManager(MDApp):
 
     def fleet_update(self, dt) -> None:
         """ function that runs every second and updates fleet information """
-        if self.current_frame == Windows.mainWindow.name:
+        if self.__current_frame == Windows.mainWindow.name:
             # updates markers on screen
             for marker in self.__markers:
                 # removing existing markers
@@ -140,19 +137,19 @@ class FleetManager(MDApp):
                 marker.add_widget(lbl)
 
             # checking last update time and updating activity statuses
-            currentTime = datetime.now()
-            for i in range(len(self.mission.vehicleStatus)):
-                delta = (currentTime - self.mission.vehicleStatus[i][2])
+            current_time = datetime.now()
+            for i in range(len(self.mission.vehicle_status)):
+                delta = (current_time - self.mission.vehicle_status[i][2])
                 if delta.total_seconds() > 10:  # TODO update this to be a set variable from yaml
-                    self.mission.vehicleStatus[i][1] = "offline"
+                    self.mission.vehicle_status[i][1] = "offline"
 
             # updating fleet status information
-            for i in range(len(self.mission.vehicleStatus)):
+            for i in range(len(self.mission.vehicle_status)):
                 # updating text
-                self.__status_list[i].secondary_text = self.mission.vehicleStatus[i][1]
+                self.__status_list[i].secondary_text = self.mission.vehicle_status[i][1]
 
                 # updating icon
-                if self.mission.vehicleStatus[i][1] == "online":
+                if self.mission.vehicle_status[i][1] == "online":
                     self.__status_list_image[i].source = "images/active.png"
                 else:
                     self.__status_list_image[i].source = "images/inactive.png"
@@ -163,10 +160,11 @@ class FleetManager(MDApp):
 
         # creating mission object
         try:
-            self.mission = Mission("missions/" + text + ".yaml")
-        except Exception as exc:
+            self.mission = Mission("missions/" + text + ".yaml")  # pylint: disable=W0201
+        except Exception as exc:  # pylint: disable=W0703
             self.root.screens[Windows.loginWindow.value].ids.spinner.active = False
             self.root.screens[Windows.loginWindow.value].ids.missionTxt.text = ""
+            print(exc)
             return
 
         # setup manager screen
@@ -175,14 +173,14 @@ class FleetManager(MDApp):
             self.root.screens[Windows.loginWindow.value].ids.spinner.active = False
 
             # creating the server to run in a thread
-            self.__server = Server(self.mission)
-            self.__server_thread = threading.Thread(
+            self.__server = Server(self.mission)  # pylint: disable=W0201
+            self.__server_thread = threading.Thread(  # pylint: disable=W0201
                 target=self.thread_function)
             self.__server_thread.start()
-            self.server_status = True  # server is now active
+            self.__server_status = True  # server is now active
 
             self.root.current = "Main"
-            self.current_frame = Windows.mainWindow.name
+            self.__current_frame = Windows.mainWindow.name
 
     def configure_manager(self) -> bool:
         """ sets up manager screen """
@@ -208,13 +206,9 @@ class FleetManager(MDApp):
             # TODO: if not darkmode should update text label text colour
 
         # preloading maps
-        if self.mission.preloadMap:
+        if self.mission.preload_map:
             # TODO: figure out how to make api calls around the area and for all zooms?
             pass
-
-        self.__markers = []
-        self.__status_list = []
-        self.__status_list_image = []
 
         # load fleet
         for vehicle in self.mission.fleet:
@@ -244,15 +238,15 @@ class FleetManager(MDApp):
                 marker)
 
             # updating vehicle list - inactive initially
-            rightIcon = ImageLeftWidget(source="images/inactive.png")
-            vehicleItem = TwoLineAvatarListItem(
+            right_icon = ImageLeftWidget(source="images/inactive.png")
+            vehicle_item = TwoLineAvatarListItem(
                 text=vehicle["callsign"], secondary_text="offline")
 
-            vehicleItem.add_widget(rightIcon)
+            vehicle_item.add_widget(right_icon)
             self.root.screens[Windows.mainWindow.value].ids.fleetList.add_widget(
-                vehicleItem)
-            self.__status_list_image.append(rightIcon)
-            self.__status_list.append(vehicleItem)
+                vehicle_item)
+            self.__status_list_image.append(right_icon)
+            self.__status_list.append(vehicle_item)
 
         return True
 
@@ -262,7 +256,7 @@ class FleetManager(MDApp):
 
     def on_stop(self):
         """ Clean up on application close """
-        if self.server_status:
+        if self.__server_status:
             os.kill(self.__server_thread.native_id, signal.SIGKILL)
         return True
 

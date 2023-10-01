@@ -1,10 +1,10 @@
 """
-    mission.py 
+    mission.py
     Used to load and manage configuration for a mission
 """
 
-import yaml
 import datetime
+import yaml
 
 
 class Mission():
@@ -14,15 +14,15 @@ class Mission():
 
     def __init__(self, path) -> None:
         # valid mission flag
-        self.isValid = True
+        self.is_valid = True
 
         # attempt to load in file
         with open(path, "r") as stream:
             try:
                 mission_file = yaml.safe_load(stream)
                 self.construct_mission(mission_file)
-            except Exception as exc:
-                self.isValid = False
+            except yaml.YAMLError as exc:
+                self.is_valid = False
                 print(exc)
 
     def construct_mission(self, mission_file) -> None:
@@ -39,20 +39,20 @@ class Mission():
 
         # reading in manager preferences
         self.darkmode = mission_file["darkmode"]
-        self.preloadMap = mission_file["preload_map"]
+        self.preload_map = mission_file["preload_map"]
 
         # reading in fleet information
-        self.fleetName = mission_file["fleet_plan"][0]["fleet_name"]
-        self.fleetNunber = mission_file["fleet_plan"][0]["number"]
+        self.fleet_name = mission_file["fleet_plan"][0]["fleet_name"]
+        self.fleet_number = mission_file["fleet_plan"][0]["number"]
         self.fleet = mission_file["fleet_plan"][0]["fleet"]
 
         # dictionary to hold vehicles activity status
-        startDateTime = datetime.datetime.now()
-        self.vehicleStatus = []
+        start_date_time = datetime.datetime.now()
+        self.vehicle_status = []
         for vehicle in self.fleet:
             # TODO: make this an enum and update list -> dict
-            self.vehicleStatus.append(
-                [vehicle["callsign"], "offline", startDateTime])
+            self.vehicle_status.append(
+                [vehicle["callsign"], "offline", start_date_time])
 
     def update_location(self, callsign, lat, long) -> bool:
         """ updates the current location of a vehicle """
@@ -60,7 +60,8 @@ class Mission():
             # testing is lat and long are numbers
             lat = float(lat)
             long = float(long)
-        except Exception as e:
+        except ValueError as exc:
+            print(exc)
             return False
 
         for i in range(len(self.fleet)):
@@ -73,7 +74,7 @@ class Mission():
 
     def update_status(self, callsign):
         """ updates the activity status of a vehicle """
-        for i in range(len(self.vehicleStatus)):
-            if self.vehicleStatus[i][0] == callsign:
-                self.vehicleStatus[i][1] = "online"
-                self.vehicleStatus[i][2] = datetime.datetime.now()
+        for i in range(len(self.vehicle_status)):
+            if self.vehicle_status[i][0] == callsign:
+                self.vehicle_status[i][1] = "online"
+                self.vehicle_status[i][2] = datetime.datetime.now()
