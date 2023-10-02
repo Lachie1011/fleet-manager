@@ -29,7 +29,12 @@ This application is intended to be open-source and as a basis to build further f
 This demo can be recreated and used to test any changes by running './demos/brisbane_demo.sh'
 
 ## Requirements
+- kivy-garden.mapview              1.0.6
+- kivymd                           1.0.1
+
 TODO
+
+Currently only tested with Ubuntu 20.04
 
 ### Future work
 - Investigate packaging options.
