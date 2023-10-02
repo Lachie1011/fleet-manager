@@ -130,10 +130,10 @@ class FleetManager(MDApp):  # pylint: disable=R0902
                     marker)
 
                 # updating label onto marker
-                lbl = MDLabel(text=vehicle["callsign"], halign="center")
+                lbl = MDLabel(text=vehicle["callsign"] + "\n" + str(vehicle["location"][0]) + " " + str(vehicle["location"][1]), halign="center")
                 lbl.pos = marker.pos[:]
                 lbl.pos[0] = lbl.pos[0] - 25
-                lbl.pos[1] = lbl.pos[1] - 70
+                lbl.pos[1] = lbl.pos[1] - 80
                 marker.add_widget(lbl)
 
             # checking last update time and updating activity statuses
