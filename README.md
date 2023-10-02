@@ -26,16 +26,16 @@ The app uses timers to update both the locations of the vehicles, statuses and m
 This application is intended to be open-source and as a basis to build further functionality ontop of. 
 
 ### Future work
-Investigate packaging options.
-Move update tasks from timed to event driven such as the callsign drawing and marker update. 
-Ability to preload / offline download map tiles (probably a way to invoke the api calls to the tile server).
-Split out the manager settings from the mission definition. 
-Rename "mission" to "operation" - kinda cringe. 
-Find a better application icon.
-Some kind of database for storing data / replayability?
-Add get request from the server to provide an interface. 
-Addition of a notification window on the bottom right of the screen.
-Ability to launch secondary app from each of listed vehicles to show other info / send POST requests to the vehicles.
+- Investigate packaging options.
+- Move update tasks from timed to event driven such as the callsign drawing and marker update. 
+- Ability to preload / offline download map tiles (probably a way to invoke the api calls to the tile server).
+- Split out the manager settings from the mission definition. 
+- Rename "mission" to "operation" - kinda cringe. 
+- Find a better application icon.
+- Some kind of database for storing data / replayability?
+- Add get request from the server to provide an interface. 
+- Addition of a notification window on the bottom right of the screen.
+- Ability to launch secondary app from each of listed vehicles to show other info / send POST requests to the vehicles.
 
 ### Icons by icons 8
 The following icons were sourced from icons 8: 
