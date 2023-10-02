@@ -25,6 +25,12 @@ The app uses timers to update both the locations of the vehicles, statuses and m
 
 This application is intended to be open-source and as a basis to build further functionality ontop of. 
 
+## Video demo
+This demo can be recreated and used to test any changes by running './demos/brisbane_demo.sh'
+
+## Requirements
+TODO
+
 ### Future work
 - Investigate packaging options.
 - Move update tasks from timed to event driven such as the callsign drawing and marker update. 
@@ -38,6 +44,8 @@ This application is intended to be open-source and as a basis to build further f
 - Ability to launch secondary app from each of listed vehicles to show other info / send POST requests to the vehicles.
 
 ### Icons by icons 8
+https://icons8.com"
+
 The following icons were sourced from icons 8: 
 - images/active.png
 - images/inactive.png
@@ -46,5 +54,3 @@ The following icons were sourced from icons 8:
 - images/tank_light.png
 - images/uav_dark.png
 - images/uav_light.png
-
-https://icons8.com"
