@@ -28,6 +28,8 @@ This application is intended to be open-source and as a basis to build further f
 ## Video demo
 This demo can be recreated and used to test any changes by running './demos/brisbane_demo.sh'
 
+![Alt Text](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGduemllbGtjcWppNzgxdXN0ZHJxaGxoa3ExaXB1MHFlbHF0eDRucSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Sj09AVKud2AG8BzyAq/giphy.gif)
+
 ## Requirements
 - kivy-garden.mapview              1.0.6
 - kivymd                           1.0.1
