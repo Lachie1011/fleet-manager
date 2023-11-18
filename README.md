@@ -1,5 +1,5 @@
 # fleet-manager
-Fleet manager is designed to be a lite application that displays the only the critical information relating to an operation or "mission".
+Fleet manager is designed to be a lite application that displays only the critical information relating to an operation or "mission".
 
 ## What it does
 The application displays key information such as a vehicle's location, callsign, and status onto a gridmap of the relevant mission area. 
